@@ -2,7 +2,7 @@
 
 ## 1. About this repository
 
-This repository contains scripts to convert open robotics dataset (Lerobot, Droid, EmbodiedScan, Open X-Embodiment etc.) to mcap files that can be visualized on https://app.foxglove.dev/. 
+This repository provides scripts to convert open-source robotics datasets (e.g., LeRobot, DROID, EmbodiedScan, Open X-Embodiment) into MCAP files for visualization on the [Foxglove](https://app.foxglove.dev/) platform. 
 
 
 ## 2. Environment
@@ -11,32 +11,13 @@ You can create a conda env from the [yaml](./environment.yml) file.
 conda env create -f environment.yml
 ```
 
-Notice that there is a [dependency hell](https://en.wikipedia.org/wiki/Dependency_hell) which I have not resolved. The hell is created by lerobot, urdfpy, networkx and numpy. You need to touch some code involving `np.float, np.int, np.infty` in the urdfpy and pyrender source code in `site_packages`/
+Please be aware of unresolved dependency conflicts between `lerobot`, `urdfpy`, `networkx`, and `numpy`. This may require manual code modifications in your local environment. Specifically, deprecated NumPy constants (`np.float`, `np.int`, `np.infty`) may need to be replaced in the `urdfpy` and `pyrender` source code within your `site-packages` directory.
 
 ## 3. Dataset
-You can use the scripts and pointers to download the datasets.   
+You can use the provided scripts and pointers to download the datasets.   
 
 
 ### 3.1 Lerobot
-
-
-
-
-### 3.2 Droid
-
-
-
-### 3.3 EmbodiedScan
-Coming soon
-
-### 3.4 Open X-Embodiment
-Coming soon
-
-
-## 4 Visualization scirpts
-Inspired by [nuscenes2mcap](https://github.com/foxglove/nuscenes2mcap) repository, here we provide example python scripts to convert dataset in its original format to mcap files. 
-
-### 4.1 Lerobot 
 The script expects the datasets to be as the following:
 ```sh
 $ tree -L 3 .
@@ -59,16 +40,40 @@ $ tree -L 3 .
         ├── head_link.STL
         ├── left_ankle_pitch_link.STL
         ├── left_ankle_roll_link.STL
+        │── ...
 ```
 
+The LeRobot datasets will be automatically downloaded by the `LeRobotDataset` API from huggingface  
+- [droid_1.0.1](https://huggingface.co/datasets/lerobot/droid_1.0.1)
+- [G1_Dex3_ToastedBread_Dataset](https://huggingface.co/datasets/unitreerobotics/G1_Dex3_ToastedBread_Dataset)
+
+The visualization scripts are expected to be compatible with other datasets from the [unitreerobotics](https://huggingface.co/unitreerobotics) project, although they have not been formally tested.
+
+### 3.2 Droid
+
+
+
+### 3.3 EmbodiedScan
+Coming soon
+
+### 3.4 Open X-Embodiment
+Coming soon
+
+
+## 4. Visualization Scripts
+Inspired by the [nuscenes2mcap](https://github.com/foxglove/nuscenes2mcap) repository, we provide example Python scripts to convert datasets from their original format to MCAP files.  
+
+Before running the visualization scripts, please ensure the datasets are present, as described in Section 3.
+
+### 4.1 Lerobot 
 For the unitree dataset, run
 ```sh
-python ./convert_unitree_to_mcap.py
+python ./convert_unitree_g1_to_mcap.py
 ```
 ![image](docs/unitree.png)
 
 
-For the droid dataset (in lerobot format, not the original droid release), run
+For the DROID dataset (in LeRobot format, not the original DROID release), run:
 ```sh
 python ./convert_droid_101_to_mcap.py
 ```
