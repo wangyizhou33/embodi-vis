@@ -3,93 +3,177 @@ import argparse
 import pyrender
 import matplotlib.pyplot as plt
 import numpy as np
+from tqdm import tqdm
+from mcap.writer import Writer as McapWriter
+from ProtobufWriter import ProtobufWriter
+from foxglove_schemas_protobuf.FrameTransforms_pb2 import FrameTransforms
+from foxglove_schemas_protobuf.FrameTransform_pb2 import FrameTransform
+from foxglove_schemas_protobuf.Vector3_pb2 import Vector3
+from foxglove_schemas_protobuf.Quaternion_pb2 import Quaternion
+from google.protobuf.timestamp_pb2 import Timestamp
+import time
 
 URDF_FILE = "urdf/go2_description.urdf"
+CSV_FILE = "go2_motor_states.csv"
+DT = 0.002
 
-# def look_at(camera_pos, target, up=np.array([0,0,1])):
-#     camera_pos = np.array(camera_pos, dtype=float)
-#     target = np.array(target, dtype=float)
-#     up = np.array(up, dtype=float)
+# Mapping from URDF joint name to CSV column index
+# Only map the "actuated" joints
+# 12 DOF for go2
+joint_name_to_csv_index = {
+    "FL_hip_joint": 3,
+    "FR_hip_joint": 0,
+    "RL_hip_joint": 9,
+    "RR_hip_joint": 6,
+    "FL_thigh_joint": 4,
+    "FR_thigh_joint": 1,
+    "RL_thigh_joint": 10,
+    "RR_thigh_joint": 7,
+    "FL_calf_joint": 5,
+    "FR_calf_joint": 2,
+    "RL_calf_joint": 11,
+    "RR_calf_joint": 8,
+}
 
-#     # Forward vector (camera looks along -Z)
-#     forward = (camera_pos - target)
-#     forward /= np.linalg.norm(forward)
 
-#     # Right vector
-#     right = np.cross(up, forward)
-#     right /= np.linalg.norm(right)
+def timestamp(time_ns: int) -> Timestamp:
+    return Timestamp(seconds=time_ns // 1_000_000_000, nanos=time_ns % 1_000_000_000)
 
-#     # True up vector
-#     up_corrected = np.cross(forward, right)
 
-#     # Build rotation-translation matrix
-#     pose = np.eye(4)
-#     pose[0, :3] = right
-#     pose[1, :3] = up_corrected
-#     pose[2, :3] = forward
-#     pose[:3, 3] = camera_pos
-#     return pose
+def load_data(csv_file):
+    import csv
+
+    all_joint_values = []
+    with open(csv_file, "r") as f:
+        reader = csv.reader(f)
+        next(reader)  # Skip header
+        for row in reader:
+            if row:
+                all_joint_values.append([float(v) for v in row])
+
+    # For now, use the first row of values for visualization
+    if all_joint_values:
+        joint_values = all_joint_values[0]
+    else:
+        print("Warning: go2_motor_states.csv contains no data rows. Using zeros.")
+        joint_values = [0.0] * 12
+    return all_joint_values
+
+
+def rot_matrix_to_quat(R):
+    """
+    Convert a 3x3 rotation matrix to quaternion [x, y, z, w].
+    """
+    trace = R[0, 0] + R[1, 1] + R[2, 2]
+    if trace > 0:
+        s = 0.5 / np.sqrt(trace + 1.0)
+        w = 0.25 / s
+        x = (R[2, 1] - R[1, 2]) * s
+        y = (R[0, 2] - R[2, 0]) * s
+        z = (R[1, 0] - R[0, 1]) * s
+    else:
+        if (R[0, 0] > R[1, 1]) and (R[0, 0] > R[2, 2]):
+            s = 2.0 * np.sqrt(1.0 + R[0, 0] - R[1, 1] - R[2, 2])
+            w = (R[2, 1] - R[1, 2]) / s
+            x = 0.25 * s
+            y = (R[0, 1] + R[1, 0]) / s
+            z = (R[0, 2] + R[2, 0]) / s
+        elif R[1, 1] > R[2, 2]:
+            s = 2.0 * np.sqrt(1.0 + R[1, 1] - R[0, 0] - R[2, 2])
+            w = (R[0, 2] - R[2, 0]) / s
+            x = (R[0, 1] + R[1, 0]) / s
+            y = 0.25 * s
+            z = (R[1, 2] + R[2, 1]) / s
+        else:
+            s = 2.0 * np.sqrt(1.0 + R[2, 2] - R[0, 0] - R[1, 1])
+            w = (R[1, 0] - R[0, 1]) / s
+            x = (R[0, 2] + R[2, 0]) / s
+            y = (R[1, 2] + R[2, 1]) / s
+            z = 0.25 * s
+    return np.array([x, y, z, w], dtype=np.float64)
 
 
 if __name__ == "__main__":
 
-
     argparser = argparse.ArgumentParser()
     argparser.add_argument("--urdf", type=str, default=URDF_FILE)
+    argparser.add_argument("--output", type=str, default="test.mcap")
     args = argparser.parse_args()
+
+    stream = open(args.output, "wb")
+    writer = McapWriter(stream)
+    writer.start()
+    protobuf_writer = ProtobufWriter(writer)
 
     print(f"Loading URDF from {args.urdf} ...")
     robot = URDF.load(args.urdf)
 
+    # load the csv file
+    all_joint_values = load_data(CSV_FILE)
     joint_positions = {}
-    
-    for joint in robot.actuated_joints:
-        print(joint.name)
-        joint_positions[joint.name] = 0.0
 
+    ts_ns = time.time_ns()
 
-    robot.show(cfg=joint_positions)
-    # fk_poses = robot.link_fk(cfg=joint_positions,
-    #                          links=['panda_link0', 
-    #                                 'panda_link1',
-    #                                 'panda_link2', 
-    #                                 'panda_link3', 
-    #                                 'panda_link4',
-    #                                 'panda_link5',
-    #                                 'panda_link6',
-    #                                 'panda_link7',
-    #                                 'panda_link8'])
+    for i in tqdm(range(len(all_joint_values))):
+        ts_ns += int(DT * 1e9)
 
-    # for key, value in fk_poses.items():
-    #     print(key.name)
-    #     print(value)
+        joint_values = all_joint_values[i]
 
+        # robot forward kinematics
+        for joint in robot.joints:
+            csv_index = joint_name_to_csv_index.get(joint.name)
+            if csv_index is not None and csv_index < len(joint_values):
+                joint_positions[joint.name] = joint_values[csv_index]
+            else:
+                joint_positions[joint.name] = 0.0
 
-    # # robot.show()
+        fk_poses = robot.link_fk(cfg=joint_positions)
 
-    # scene = pyrender.Scene()
-    # meshes = robot.visual_trimesh_fk()
-    # for tm, transform in meshes.items():
-    #     pm = pyrender.Mesh.from_trimesh(tm)
-    #     scene.add(pm, pose=transform)
+        # transforms
+        base_link = robot.base_link.name
+        tfs = FrameTransforms()
+        tfs.transforms.append(
+            FrameTransform(
+                parent_frame_id="world",
+                child_frame_id=base_link,
+                translation=Vector3(x=0.0, y=0.0, z=0.0),
+                rotation=Quaternion(x=0.0, y=0.0, z=0.0, w=1.0),
+            )
+        )
 
-    # # Add a camera
-    # camera = pyrender.PerspectiveCamera(yfov=np.pi / 3.0)
+        for j, joint in enumerate(robot.joints):
+            parent_link = base_link
+            child_link = joint.child
+            # print(f"{parent_link} links to {child_link} by {joint.name}")
+            T_local = fk_poses[robot.link_map[child_link]]
+            trans = T_local[:3, 3]
+            quat = rot_matrix_to_quat(T_local[:3, :3])
+            tfs.transforms.append(
+                FrameTransform(
+                    parent_frame_id=parent_link,
+                    child_frame_id=child_link,
+                    timestamp=Timestamp(
+                        seconds=int(ts_ns // 1e9), nanos=int(ts_ns % 1e9)
+                    ),
+                    translation=Vector3(
+                        x=float(trans[0]), y=float(trans[1]), z=float(trans[2])
+                    ),
+                    rotation=Quaternion(
+                        x=float(quat[0]),
+                        y=float(quat[1]),
+                        z=float(quat[2]),
+                        w=float(quat[3]),
+                    ),
+                )
+            )
 
+        protobuf_writer.write_message(
+            topic="/tf",
+            message=tfs,
+            log_time=ts_ns,  # to microseconds
+            publish_time=ts_ns,  # to microseconds
+        )
 
-    # pose = look_at([0, 1, 1.5], [0, 0, 0], [0, 0, 1])
-
-    # scene.add(camera, pose=pose)
-
-    # # Add some light (optional, but pyrender renderer wants light sources)
-    # light = pyrender.DirectionalLight(color=np.ones(3), intensity=2.0)
-    # scene.add(light, pose=np.eye(4))
-
-    # # Render
-    # renderer = pyrender.OffscreenRenderer(512, 512)
-    # color, depth = renderer.render(scene)
-
-    # mask = depth > 0
-
-    # plt.imshow(mask, cmap='gray')
-    # plt.show()
+    print(f"The mcap file is saved at {args.output}.")
+    writer.finish()
+    stream.close()

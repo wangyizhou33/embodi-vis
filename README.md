@@ -70,7 +70,7 @@ For the unitree dataset, run
 ```sh
 python ./convert_unitree_g1_to_mcap.py
 ```
-![image](docs/unitree.png)
+![image](docs/unitree_g1.png)
 
 
 For the DROID dataset (in LeRobot format, not the original DROID release), run:
@@ -78,6 +78,14 @@ For the DROID dataset (in LeRobot format, not the original DROID release), run:
 python ./convert_droid_101_to_mcap.py
 ```
 ![image](docs/droid_101.png)
+
+
+### 4.2 Unitree go2
+We recorded a go2 robot "standing" experiment in `go2_motor_states.csv`. The recording consists of 12 columns corresponding to the 12 actuated joint states.
+```sh
+python ./convert_unitree_go2_to_mcap.py
+```
+![image](docs/unitree_go2.png)
 
 
 ### 4.2 Droid
@@ -88,3 +96,14 @@ Coming soon
 
 ### 4.4 Open X-Embodiment
 Coming soon
+
+
+## 5 Serve the urdf files
+You need to serve the urdf files for the foxglove frontend. 
+
+```sh
+npx http-server ./urdf -p 8001 --cors
+```
+Then via the frontend, you can add a URDF layer in the 3D panel using the provided urdf files in the repository
+
+![image](docs/urdf_serve.png)
