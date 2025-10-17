@@ -12,9 +12,12 @@ from foxglove_schemas_protobuf.Vector3_pb2 import Vector3
 from foxglove_schemas_protobuf.Quaternion_pb2 import Quaternion
 from google.protobuf.timestamp_pb2 import Timestamp
 import time
+import bisect
+from scipy.spatial.transform import Rotation
 
 URDF_FILE = "urdf/go2_description.urdf"
-CSV_FILE = "go2_motor_states.csv"
+JOINT_FILE = "go2_motor_states.csv"
+POSE_FILE = "go2_base_pose.csv"
 DT = 0.002
 
 # Mapping from URDF joint name to CSV column index
@@ -40,7 +43,7 @@ def timestamp(time_ns: int) -> Timestamp:
     return Timestamp(seconds=time_ns // 1_000_000_000, nanos=time_ns % 1_000_000_000)
 
 
-def load_data(csv_file):
+def load_joint_data(csv_file):
     import csv
 
     all_joint_values = []
@@ -49,48 +52,50 @@ def load_data(csv_file):
         next(reader)  # Skip header
         for row in reader:
             if row:
-                all_joint_values.append([float(v) for v in row])
+                all_joint_values.append((int(row[0]), [float(v) for v in row[1:]]))
 
-    # For now, use the first row of values for visualization
-    if all_joint_values:
-        joint_values = all_joint_values[0]
-    else:
+    if not all_joint_values:
         print("Warning: go2_motor_states.csv contains no data rows. Using zeros.")
-        joint_values = [0.0] * 12
+        all_joint_values = [(0, [0.0] * 12)]
     return all_joint_values
 
 
-def rot_matrix_to_quat(R):
-    """
-    Convert a 3x3 rotation matrix to quaternion [x, y, z, w].
-    """
-    trace = R[0, 0] + R[1, 1] + R[2, 2]
-    if trace > 0:
-        s = 0.5 / np.sqrt(trace + 1.0)
-        w = 0.25 / s
-        x = (R[2, 1] - R[1, 2]) * s
-        y = (R[0, 2] - R[2, 0]) * s
-        z = (R[1, 0] - R[0, 1]) * s
+def load_pose_data(csv_file):
+    import csv
+
+    pose_data = []
+    with open(csv_file, "r") as f:
+        reader = csv.reader(f)
+        next(reader)  # Skip header
+        for row in reader:
+            if row:
+                # ts, x, y, z, roll, pitch, yaw
+                pose_data.append([int(row[0])] + [float(v) for v in row[1:]])
+    if not pose_data:
+        print(f"Warning: {csv_file} contains no data rows.")
+    return pose_data
+
+
+def find_closest_pose(pose_data, target_ts):
+    # pose_data is sorted by timestamp (the first element of each sublist)
+    timestamps = [p[0] for p in pose_data]
+
+    # Find insertion point
+    idx = bisect.bisect_left(timestamps, target_ts)
+
+    if idx == 0:
+        return pose_data[0]
+    if idx == len(timestamps):
+        return pose_data[-1]
+
+    # Check neighbors
+    before = pose_data[idx - 1]
+    after = pose_data[idx]
+
+    if target_ts - before[0] < after[0] - target_ts:
+        return before
     else:
-        if (R[0, 0] > R[1, 1]) and (R[0, 0] > R[2, 2]):
-            s = 2.0 * np.sqrt(1.0 + R[0, 0] - R[1, 1] - R[2, 2])
-            w = (R[2, 1] - R[1, 2]) / s
-            x = 0.25 * s
-            y = (R[0, 1] + R[1, 0]) / s
-            z = (R[0, 2] + R[2, 0]) / s
-        elif R[1, 1] > R[2, 2]:
-            s = 2.0 * np.sqrt(1.0 + R[1, 1] - R[0, 0] - R[2, 2])
-            w = (R[0, 2] - R[2, 0]) / s
-            x = (R[0, 1] + R[1, 0]) / s
-            y = 0.25 * s
-            z = (R[1, 2] + R[2, 1]) / s
-        else:
-            s = 2.0 * np.sqrt(1.0 + R[2, 2] - R[0, 0] - R[1, 1])
-            w = (R[1, 0] - R[0, 1]) / s
-            x = (R[0, 2] + R[2, 0]) / s
-            y = (R[1, 2] + R[2, 1]) / s
-            z = 0.25 * s
-    return np.array([x, y, z, w], dtype=np.float64)
+        return after
 
 
 if __name__ == "__main__":
@@ -108,16 +113,13 @@ if __name__ == "__main__":
     print(f"Loading URDF from {args.urdf} ...")
     robot = URDF.load(args.urdf)
 
-    # load the csv file
-    all_joint_values = load_data(CSV_FILE)
+    # load the csv files
+    all_joint_values = load_joint_data(JOINT_FILE)
+    all_pose_values = load_pose_data(POSE_FILE)
     joint_positions = {}
 
-    ts_ns = time.time_ns()
-
     for i in tqdm(range(len(all_joint_values))):
-        ts_ns += int(DT * 1e9)
-
-        joint_values = all_joint_values[i]
+        ts_ns, joint_values = all_joint_values[i]
 
         # robot forward kinematics
         for joint in robot.joints:
@@ -132,12 +134,28 @@ if __name__ == "__main__":
         # transforms
         base_link = robot.base_link.name
         tfs = FrameTransforms()
+
+        # Find the closest pose and set the world -> base_link transform
+        closest_pose = find_closest_pose(all_pose_values, ts_ns)
+        _, x, y, z, roll, pitch, yaw = closest_pose
+
+        # Reason to use the following formula is that
+        # at the recording side, rpy were calculated using
+        # pitch = asin(-mat[2]);
+        # roll  = atan2(mat[5], mat[8]);
+        # yaw   = atan2(mat[1], mat[0]);
+        # so converting to scipy convention, we get the following
+        r = Rotation.from_euler("xyz", [roll, pitch, yaw])
+        quat_xyzw = r.inv().as_quat()
+        q = Quaternion(x=quat_xyzw[0], y=quat_xyzw[1], z=quat_xyzw[2], w=quat_xyzw[3])
+
         tfs.transforms.append(
             FrameTransform(
                 parent_frame_id="world",
                 child_frame_id=base_link,
-                translation=Vector3(x=0.0, y=0.0, z=0.0),
-                rotation=Quaternion(x=0.0, y=0.0, z=0.0, w=1.0),
+                timestamp=timestamp(ts_ns),
+                translation=Vector3(x=x, y=y, z=z),
+                rotation=q,
             )
         )
 
@@ -147,14 +165,13 @@ if __name__ == "__main__":
             # print(f"{parent_link} links to {child_link} by {joint.name}")
             T_local = fk_poses[robot.link_map[child_link]]
             trans = T_local[:3, 3]
-            quat = rot_matrix_to_quat(T_local[:3, :3])
+            r = Rotation.from_matrix(T_local[:3, :3])
+            quat = r.as_quat()
             tfs.transforms.append(
                 FrameTransform(
                     parent_frame_id=parent_link,
                     child_frame_id=child_link,
-                    timestamp=Timestamp(
-                        seconds=int(ts_ns // 1e9), nanos=int(ts_ns % 1e9)
-                    ),
+                    timestamp=timestamp(ts_ns),
                     translation=Vector3(
                         x=float(trans[0]), y=float(trans[1]), z=float(trans[2])
                     ),
@@ -170,8 +187,8 @@ if __name__ == "__main__":
         protobuf_writer.write_message(
             topic="/tf",
             message=tfs,
-            log_time=ts_ns,  # to microseconds
-            publish_time=ts_ns,  # to microseconds
+            log_time=ts_ns,
+            publish_time=ts_ns,
         )
 
     print(f"The mcap file is saved at {args.output}.")
