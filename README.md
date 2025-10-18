@@ -50,7 +50,28 @@ The LeRobot datasets will be automatically downloaded by the `LeRobotDataset` AP
 The visualization scripts are expected to be compatible with other datasets from the [unitreerobotics](https://huggingface.co/unitreerobotics) project, although they have not been formally tested.
 
 ### 3.2 Droid
+The Droid dataset is at google cloud storage and can be downloaded via
+```sh
+gsutil -m cp -r gs://gresearch/robotics/droid_raw/1.0.1/ILIAD/success/2023-06-11/Sun_Jun_11_15:52:37_2023 data/
+```
+The buckets can be browsed in chrome via https://console.developers.google.com/storage/gresearch/robotics/droid_raw/1.0.1
 
+The script expects the datasets to be as the following:
+```
+$ tree -L 3 .
+.
+├── ...
+├── droid_100
+└── 1.0.0
+    ├── dataset_info.json
+    ├── features.json
+    ├── r2d2_faceblur-train.tfrecord-00000-of-00031
+    ├── r2d2_faceblur-train.tfrecord-00001-of-00031
+    ├── r2d2_faceblur-train.tfrecord-00002-of-00031
+    ├── r2d2_faceblur-train.tfrecord-00003-of-00031
+    ├── r2d2_faceblur-train.tfrecord-00004-of-00031
+    ...
+```
 
 
 ### 3.3 EmbodiedScan
@@ -59,6 +80,25 @@ Coming soon
 ### 3.4 Open X-Embodiment
 Coming soon
 
+
+### 3.5 Arkit scenes
+The script expects the datasets to be as the following:
+
+```sh
+tree -L 4 ./arkit_scenes
+./arkit_scenes/
+└── raw
+    ├── metadata.csv
+    └── Validation
+        └── 48458663
+            ├── 48458663_3dod_annotation.json
+            ├── 48458663_3dod_mesh.ply
+            ├── lowres_depth
+            ├── lowres_wide
+            ├── lowres_wide_intrinsics
+            └── lowres_wide.traj
+        └── ...
+```
 
 ## 4. Visualization Scripts
 Inspired by the [nuscenes2mcap](https://github.com/foxglove/nuscenes2mcap) repository, we provide example Python scripts to convert datasets from their original format to MCAP files.  
@@ -87,14 +127,20 @@ python ./convert_unitree_go2_to_mcap.py
 ```
 ![image](docs/unitree_go2.png)
 
+### 4.3 Arkit scenes
+```sh
+python convert_arkitscene_to_mcap.py 
+```
+![image](docs/arkit_scene.png)
 
-### 4.2 Droid
+
+### 4.4 Droid
 
 
-### 4.3 EmbodiedScan
+### 4.5 EmbodiedScan
 Coming soon
 
-### 4.4 Open X-Embodiment
+### 4.6 Open X-Embodiment
 Coming soon
 
 
