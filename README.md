@@ -82,10 +82,14 @@ Coming soon
 
 
 ### 3.5 Arkit scenes
-The script expects the datasets to be as the following:
-
+To download a arkitscene data episode, use
 ```sh
-tree -L 4 ./arkit_scenes
+python download_arkitscenes.py
+```
+
+The downloaded data will be in the project directory as the following
+```sh
+tree -L 4 ./arkitscenes
 ./arkit_scenes/
 └── raw
     ├── metadata.csv

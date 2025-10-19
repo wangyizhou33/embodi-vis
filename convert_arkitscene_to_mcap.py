@@ -26,7 +26,7 @@ import io
 import json
 from time import time_ns
 
-DATA_DIR = "./arkit_scenes/raw/Validation/48458663"
+DATA_DIR = "./arkitscenes/raw/Validation/48458663"
 EPISODE_NAME = "48458663"
 
 
@@ -255,7 +255,7 @@ if __name__ == "__main__":
         os.path.join(args.data_dir, "lowres_wide_intrinsics")
     )
     cam_poses = load_camera_poses(os.path.join(args.data_dir, "lowres_wide.traj"))
-    pcd = load_ply(os.path.join(DATA_DIR, "48458663_3dod_mesh.ply"))
+    pcd = load_ply(os.path.join(DATA_DIR, EPISODE_NAME + "_3dod_mesh.ply"))
     image_files = load_image_folder(os.path.join(args.data_dir, "lowres_wide"))
     image_timestamps = np.array([t for t, p in image_files])
 
@@ -325,7 +325,7 @@ if __name__ == "__main__":
                     orientation=Quaternion(x=quat[0], y=quat[1], z=quat[2], w=quat[3]),
                 ),
                 size=Vector3(x=size[0], y=size[1], z=size[2]),
-                color=Color(r=0, g=0, b=1, a=0.4),
+                color=Color(r=0, g=0, b=1, a=0.2),
             )
 
             # Add text label
