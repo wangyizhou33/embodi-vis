@@ -14,6 +14,7 @@ from foxglove_schemas_protobuf.PackedElementField_pb2 import PackedElementField
 from foxglove_schemas_protobuf.Pose_pb2 import Pose
 from foxglove_schemas_protobuf.SceneUpdate_pb2 import SceneUpdate
 from foxglove_schemas_protobuf.SceneEntityDeletion_pb2 import SceneEntityDeletion
+from foxglove_schemas_protobuf.LinePrimitive_pb2 import LinePrimitive
 from foxglove_schemas_protobuf.Color_pb2 import Color
 from google.protobuf.timestamp_pb2 import Timestamp
 import argparse
@@ -82,12 +83,25 @@ def parse_traj_line(line: str):
     ts = int(float(tokens[0]) * 1e9)
     rx, ry, rz = map(float, tokens[1:4])
     tx, ty, tz = map(float, tokens[4:7])
-    # Rotation vector (axis-angle): magnitude = angle, direction = axis
-    rot = R.from_rotvec([rx, ry, rz])  # gives a Rotation object (scipy)
-    quat = rot.as_quat()  # (x, y, z, w) quaternion
-    # Translation vector:
+    # Original rotation and translation
+    rot = R.from_rotvec([rx, ry, rz])
     t = np.array([tx, ty, tz])
-    return ts, t, quat
+
+    # Form homogeneous matrix
+    H = np.eye(4)
+    H[:3, :3] = rot.as_matrix()
+    H[:3, 3] = t
+
+    # Invert homogeneous matrix
+    H_inv = np.linalg.inv(H)
+
+    # Extract inverted translation and quaternion
+    t_inv = H_inv[:3, 3]
+    R_inv = H_inv[:3, :3]
+    rot_inv = R.from_matrix(R_inv)
+    quat_inv = rot_inv.as_quat()
+
+    return ts, t_inv, quat_inv
 
 
 def load_image_folder(dir_path):
@@ -350,13 +364,40 @@ if __name__ == "__main__":
             log_time=first_ts_ns,
         )
 
+    # Create and write camera trajectory as a line strip
+    scene_update_traj = SceneUpdate()
+    entity_traj = scene_update_traj.entities.add()
+    entity_traj.id = "camera_trajectory"
+    entity_traj.frame_id = "/world"
+    entity_traj.timestamp.CopyFrom(timestamp(first_ts_ns))
+    entity_traj.frame_locked = True
+
+    line = entity_traj.lines.add()
+    line.type = LinePrimitive.Type.LINE_STRIP
+    line.pose.orientation.w = 1.0
+    line.thickness = 0.01
+    line.color.r = 1.0
+    line.color.g = 0.0
+    line.color.b = 0.0
+    line.color.a = 1.0
+
+    for t, _ in cam_poses.values():
+        line.points.add(x=t[0], y=t[1], z=t[2])
+
+    protobuf_writer.write_message(
+        "/scene/camera_trajectory",
+        scene_update_traj,
+        publish_time=first_ts_ns,
+        log_time=first_ts_ns,
+    )
+
     # time loop
     for ts_ns, (t, quat) in tqdm(cam_poses.items(), desc="Processing frames"):
 
         ft_msg = FrameTransform(
             timestamp=timestamp(ts_ns),
-            parent_frame_id="/sensors/camera",
-            child_frame_id="/world",
+            parent_frame_id="/world",
+            child_frame_id="/sensors/camera",
             translation=Vector3(x=t[0], y=t[1], z=t[2]),
             rotation=Quaternion(x=quat[0], y=quat[1], z=quat[2], w=quat[3]),
         )

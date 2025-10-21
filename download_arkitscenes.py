@@ -4,7 +4,7 @@ import subprocess
 import zipfile
 import pandas as pd
 
-# Reference: 
+# Reference:
 # https://github.com/rerun-io/rerun/blob/main/examples/python/arkit_scenes/arkit_scenes/download_dataset.py
 
 ARkitscense_url = (
@@ -41,13 +41,18 @@ missing_3dod_assets_video_ids = [
     "45663227",
 ]
 
+
 def raw_files(video_id: str, assets: list[str], metadata: pd.DataFrame) -> list[str]:
     file_names = []
     for asset in assets:
         if HIGRES_DEPTH_ASSET_NAME == asset:
-            in_upsampling = metadata.loc[metadata["video_id"] == float(video_id), ["is_in_upsampling"]].iat[0, 0]
+            in_upsampling = metadata.loc[
+                metadata["video_id"] == float(video_id), ["is_in_upsampling"]
+            ].iat[0, 0]
             if not in_upsampling:
-                print(f"Skipping asset {asset} for video_id {video_id} - Video not in upsampling dataset")
+                print(
+                    f"Skipping asset {asset} for video_id {video_id} - Video not in upsampling dataset"
+                )
                 continue  # highres_depth asset only available for video ids from upsampling dataset
 
         if asset in [
@@ -78,6 +83,7 @@ def raw_files(video_id: str, assets: list[str], metadata: pd.DataFrame) -> list[
         else:
             raise Exception(f"No asset = {asset} in raw dataset")
     return file_names
+
 
 def download_file(url: str, file_name: str, dst: str) -> bool:
     os.makedirs(dst, exist_ok=True)
@@ -110,17 +116,23 @@ def unzip_file(file_name: str, dst: str, keep_zip: bool = True) -> bool:
         os.remove(filepath)
     return True
 
+
 def get_metadata(dataset: str, download_dir: str) -> pd.DataFrame | None:
     filename = "metadata.csv"
-    url = f"{ARkitscense_url}/threedod/{filename}" if "3dod" == dataset else f"{ARkitscense_url}/{dataset}/{filename}"
+    url = (
+        f"{ARkitscense_url}/threedod/{filename}"
+        if "3dod" == dataset
+        else f"{ARkitscense_url}/{dataset}/{filename}"
+    )
     dst_folder = os.path.join(download_dir, dataset)
-    dst_file = os.path.join(dst_folder , filename)
+    dst_file = os.path.join(dst_folder, filename)
 
     if not download_file(url, filename, dst_folder):
         return None
 
     metadata = pd.read_csv(dst_file)
     return metadata
+
 
 def download_data(
     dataset: str,
@@ -154,14 +166,14 @@ def download_data(
 
     for video_id in sorted(set(video_ids)):
         split = dataset_splits[video_ids.index(video_id)]
-        dst_dir = os.path.join(download_dir , dataset , split)
+        dst_dir = os.path.join(download_dir, dataset, split)
         if dataset == "raw":
             url_prefix = ""
             file_names = []
             if not raw_dataset_assets:
                 print(f"Warning: No raw assets given for video id {video_id}")
             else:
-                dst_dir = os.path.join(dst_dir , str(video_id))
+                dst_dir = os.path.join(dst_dir, str(video_id))
                 url_prefix = f"{ARkitscense_url}/raw/{split}/{video_id}" + "/{}"
                 file_names = raw_files(video_id, raw_dataset_assets, metadata)
         elif dataset == "3dod":
@@ -179,19 +191,22 @@ def download_data(
 
         if should_download_laser_scanner_point_cloud and dataset == "raw":
             # Point clouds only available for the raw dataset
-            download_laser_scanner_point_clouds_for_video(video_id, metadata, download_dir)
+            download_laser_scanner_point_clouds_for_video(
+                video_id, metadata, download_dir
+            )
 
         for file_name in file_names:
             dst_path = os.path.join(dst_dir, file_name)
             url = url_prefix.format(file_name)
 
-            if not file_name.endswith(".zip") or not os.path.isdir(dst_path[: -len(".zip")]):
+            if not file_name.endswith(".zip") or not os.path.isdir(
+                dst_path[: -len(".zip")]
+            ):
                 download_file(url, dst_path, dst_dir)
             else:
                 pass  # skipping download of existing zip file
             if file_name.endswith(".zip") and os.path.isfile(dst_path):
                 unzip_file(file_name, dst_dir, keep_zip)
-
 
 
 def main() -> None:
@@ -210,8 +225,8 @@ def main() -> None:
         "annotation",
         "mesh",
     ]
-    # # if include_highres:
-    # #     assets_to_download.extend(["highres_depth", "wide", "wide_intrinsics"])
+    if True:
+        assets_to_download.extend(["highres_depth", "wide", "wide_intrinsics"])
     download_data(
         dataset="raw",
         video_ids=[video_id],

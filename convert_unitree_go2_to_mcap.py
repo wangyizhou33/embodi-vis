@@ -102,7 +102,7 @@ if __name__ == "__main__":
 
     argparser = argparse.ArgumentParser()
     argparser.add_argument("--urdf", type=str, default=URDF_FILE)
-    argparser.add_argument("--output", type=str, default="test.mcap")
+    argparser.add_argument("--output", type=str, default="unitree_go2.mcap")
     args = argparser.parse_args()
 
     stream = open(args.output, "wb")
