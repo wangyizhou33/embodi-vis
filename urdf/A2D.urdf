@@ -12,7 +12,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://meshes/base_link.STL"/>
+        <mesh filename="meshes/A2D/base_link.STL"/>
       </geometry>
       <material name="">
         <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1"/>  <!-- 灰色 -->
@@ -22,7 +22,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://meshes/base_link.STL"/>
+        <mesh filename="meshes/A2D/base_link.STL"/>
       </geometry>
     </collision>
   </link>
@@ -40,7 +40,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://meshes/link_up_down_body.STL"/>
+        <mesh filename="meshes/A2D/link_up_down_body.STL"/>
       </geometry>
       <material name="">
         <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1"/>
@@ -50,7 +50,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://meshes/link_up_down_body.STL"/>
+        <mesh filename="meshes/A2D/link_up_down_body.STL"/>
       </geometry>
     </collision>
   </link>
@@ -77,7 +77,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="3.14159 0 0"/>
       <geometry>
-        <mesh filename="package://meshes/link_pitch_body.STL"/>
+        <mesh filename="meshes/A2D/link_pitch_body.STL"/>
       </geometry>
       <material name="">
         <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1"/>
@@ -87,7 +87,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="3.14159 0 0"/>
       <geometry>
-        <mesh filename="package://meshes/link_pitch_body.STL"/>
+        <mesh filename="meshes/A2D/link_pitch_body.STL"/>
       </geometry>
     </collision>
   </link>
@@ -114,7 +114,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 3.14159"/>
       <geometry>
-        <mesh filename="package://meshes/link_yaw_head.STL"/>
+        <mesh filename="meshes/A2D/link_yaw_head.STL"/>
       </geometry>
       <material name="">
         <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1"/>
@@ -124,7 +124,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 3.14159"/>
       <geometry>
-        <mesh filename="package://meshes/link_yaw_head.STL"/>
+        <mesh filename="meshes/A2D/link_yaw_head.STL"/>
       </geometry>
     </collision>
   </link>
@@ -151,7 +151,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 3.14159 0"/>
       <geometry>
-        <mesh filename="package://meshes/link_pitch_head.STL"/>
+        <mesh filename="meshes/A2D/link_pitch_head.STL"/>
       </geometry>
       <material name="">
         <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1"/>
@@ -161,7 +161,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 3.14159 0"/>
       <geometry>
-        <mesh filename="package://meshes/link_pitch_head.STL"/>
+        <mesh filename="meshes/A2D/link_pitch_head.STL"/>
       </geometry>
     </collision>
   </link>
@@ -223,7 +223,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/base_link_l.STL" />
+          filename="meshes/A2D/base_link_l.STL" />
       </geometry>
       <material
         name="">
@@ -237,7 +237,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/base_link_l.STL" />
+          filename="meshes/A2D/base_link_l.STL" />
       </geometry>
     </collision>
   </link>
@@ -263,7 +263,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link1_l.STL" />
+          filename="meshes/A2D/Link1_l.STL" />
       </geometry>
       <material
         name="">
@@ -277,7 +277,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link1_l.STL" />
+          filename="meshes/A2D/Link1_l.STL" />
       </geometry>
     </collision>
   </link>
@@ -321,7 +321,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link2_l.STL" />
+          filename="meshes/A2D/Link2_l.STL" />
       </geometry>
       <material
         name="">
@@ -335,7 +335,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link2_l.STL" />
+          filename="meshes/A2D/Link2_l.STL" />
       </geometry>
     </collision>
   </link>
@@ -379,7 +379,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link3_l.STL" />
+          filename="meshes/A2D/Link3_l.STL" />
       </geometry>
       <material
         name="">
@@ -393,7 +393,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link3_l.STL" />
+          filename="meshes/A2D/Link3_l.STL" />
       </geometry>
     </collision>
   </link>
@@ -437,7 +437,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link4_l.STL" />
+          filename="meshes/A2D/Link4_l.STL" />
       </geometry>
       <material
         name="">
@@ -451,7 +451,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link4_l.STL" />
+          filename="meshes/A2D/Link4_l.STL" />
       </geometry>
     </collision>
   </link>
@@ -495,7 +495,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link5_l.STL" />
+          filename="meshes/A2D/Link5_l.STL" />
       </geometry>
       <material
         name="">
@@ -509,7 +509,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link5_l.STL" />
+          filename="meshes/A2D/Link5_l.STL" />
       </geometry>
     </collision>
   </link>
@@ -553,7 +553,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link6_l.STL" />
+          filename="meshes/A2D/Link6_l.STL" />
       </geometry>
       <material
         name="">
@@ -567,7 +567,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link6_l.STL" />
+          filename="meshes/A2D/Link6_l.STL" />
       </geometry>
     </collision>
   </link>
@@ -611,7 +611,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link7_l.STL" />
+          filename="meshes/A2D/Link7_l.STL" />
       </geometry>
       <material
         name="">
@@ -625,7 +625,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link7_l.STL" />
+          filename="meshes/A2D/Link7_l.STL" />
       </geometry>
     </collision>
   </link>
@@ -685,7 +685,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/base_link_r.STL" />
+          filename="meshes/A2D/base_link_r.STL" />
       </geometry>
       <material
         name="">
@@ -699,7 +699,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/base_link_r.STL" />
+          filename="meshes/A2D/base_link_r.STL" />
       </geometry>
     </collision>
   </link>
@@ -725,7 +725,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link1_r.STL" />
+          filename="meshes/A2D/Link1_r.STL" />
       </geometry>
       <material
         name="">
@@ -739,7 +739,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link1_r.STL" />
+          filename="meshes/A2D/Link1_r.STL" />
       </geometry>
     </collision>
   </link>
@@ -783,7 +783,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link2_r.STL" />
+          filename="meshes/A2D/Link2_r.STL" />
       </geometry>
       <material
         name="">
@@ -797,7 +797,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link2_r.STL" />
+          filename="meshes/A2D/Link2_r.STL" />
       </geometry>
     </collision>
   </link>
@@ -841,7 +841,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link3_r.STL" />
+          filename="meshes/A2D/Link3_r.STL" />
       </geometry>
       <material
         name="">
@@ -855,7 +855,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link3_r.STL" />
+          filename="meshes/A2D/Link3_r.STL" />
       </geometry>
     </collision>
   </link>
@@ -899,7 +899,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link4_r.STL" />
+          filename="meshes/A2D/Link4_r.STL" />
       </geometry>
       <material
         name="">
@@ -913,7 +913,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link4_r.STL" />
+          filename="meshes/A2D/Link4_r.STL" />
       </geometry>
     </collision>
   </link>
@@ -957,7 +957,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link5_r.STL" />
+          filename="meshes/A2D/Link5_r.STL" />
       </geometry>
       <material
         name="">
@@ -971,7 +971,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link5_r.STL" />
+          filename="meshes/A2D/Link5_r.STL" />
       </geometry>
     </collision>
   </link>
@@ -1015,7 +1015,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link6_r.STL" />
+          filename="meshes/A2D/Link6_r.STL" />
       </geometry>
       <material
         name="">
@@ -1029,7 +1029,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link6_r.STL" />
+          filename="meshes/A2D/Link6_r.STL" />
       </geometry>
     </collision>
   </link>
@@ -1073,7 +1073,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link7_r.STL" />
+          filename="meshes/A2D/Link7_r.STL" />
       </geometry>
       <material
         name="">
@@ -1087,7 +1087,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/Link7_r.STL" />
+          filename="meshes/A2D/Link7_r.STL" />
       </geometry>
     </collision>
   </link>
@@ -1147,7 +1147,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/gripper_base_link.STL" />
+          filename="meshes/A2D/gripper_base_link.STL" />
       </geometry>
       <material
         name="">
@@ -1161,7 +1161,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/gripper_base_link.STL" />
+          filename="meshes/A2D/gripper_base_link.STL" />
       </geometry>
     </collision>
     </link>
@@ -1187,7 +1187,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow1_Link.STL" />
+            filename="meshes/A2D/narrow1_Link.STL" />
         </geometry>
         <material
           name="">
@@ -1201,7 +1201,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow1_Link.STL" />
+            filename="meshes/A2D/narrow1_Link.STL" />
         </geometry>
       </collision>
     </link>
@@ -1245,7 +1245,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow3_Link.STL" />
+            filename="meshes/A2D/narrow3_Link.STL" />
         </geometry>
         <material
           name="">
@@ -1259,7 +1259,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow3_Link.STL" />
+            filename="meshes/A2D/narrow3_Link.STL" />
         </geometry>
       </collision>
     </link>
@@ -1303,7 +1303,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow4_Link.STL" />
+            filename="meshes/A2D/narrow4_Link.STL" />
         </geometry>
         <material
           name="">
@@ -1317,7 +1317,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow4_Link.STL" />
+            filename="meshes/A2D/narrow4_Link.STL" />
         </geometry>
       </collision>
     </link>
@@ -1361,7 +1361,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow2_Link.STL" />
+            filename="meshes/A2D/narrow2_Link.STL" />
         </geometry>
         <material
           name="">
@@ -1375,7 +1375,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow2_Link.STL" />
+            filename="meshes/A2D/narrow2_Link.STL" />
         </geometry>
       </collision>
     </link>
@@ -1419,7 +1419,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide1_Link.STL" />
+            filename="meshes/A2D/wide1_Link.STL" />
         </geometry>
         <material
           name="">
@@ -1433,7 +1433,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide1_Link.STL" />
+            filename="meshes/A2D/wide1_Link.STL" />
         </geometry>
       </collision>
     </link>
@@ -1477,7 +1477,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide3_Link.STL" />
+            filename="meshes/A2D/wide3_Link.STL" />
         </geometry>
         <material
           name="">
@@ -1491,7 +1491,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide3_Link.STL" />
+            filename="meshes/A2D/wide3_Link.STL" />
         </geometry>
       </collision>
     </link>
@@ -1535,7 +1535,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide4_Link.STL" />
+            filename="meshes/A2D/wide4_Link.STL" />
         </geometry>
         <material
           name="">
@@ -1549,7 +1549,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide4_Link.STL" />
+            filename="meshes/A2D/wide4_Link.STL" />
         </geometry>
       </collision>
     </link>
@@ -1593,7 +1593,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide2_Link.STL" />
+            filename="meshes/A2D/wide2_Link.STL" />
         </geometry>
         <material
           name="">
@@ -1607,7 +1607,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide2_Link.STL" />
+            filename="meshes/A2D/wide2_Link.STL" />
         </geometry>
       </collision>
     </link>
@@ -1655,7 +1655,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/gripper_base_link.STL" />
+          filename="meshes/A2D/gripper_base_link.STL" />
       </geometry>
       <material
         name="">
@@ -1669,7 +1669,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://meshes/gripper_base_link.STL" />
+          filename="meshes/A2D/gripper_base_link.STL" />
       </geometry>
     </collision>
     </link>
@@ -1695,7 +1695,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow1_Link.STL" />
+            filename="meshes/A2D/narrow1_Link.STL" />
         </geometry>
         <material
           name="">
@@ -1709,7 +1709,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow1_Link.STL" />
+            filename="meshes/A2D/narrow1_Link.STL" />
         </geometry>
       </collision>
     </link>
@@ -1753,7 +1753,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow3_Link.STL" />
+            filename="meshes/A2D/narrow3_Link.STL" />
         </geometry>
         <material
           name="">
@@ -1767,7 +1767,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow3_Link.STL" />
+            filename="meshes/A2D/narrow3_Link.STL" />
         </geometry>
       </collision>
     </link>
@@ -1811,7 +1811,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow4_Link.STL" />
+            filename="meshes/A2D/narrow4_Link.STL" />
         </geometry>
         <material
           name="">
@@ -1825,7 +1825,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow4_Link.STL" />
+            filename="meshes/A2D/narrow4_Link.STL" />
         </geometry>
       </collision>
     </link>
@@ -1869,7 +1869,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow2_Link.STL" />
+            filename="meshes/A2D/narrow2_Link.STL" />
         </geometry>
         <material
           name="">
@@ -1883,7 +1883,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/narrow2_Link.STL" />
+            filename="meshes/A2D/narrow2_Link.STL" />
         </geometry>
       </collision>
     </link>
@@ -1927,7 +1927,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide1_Link.STL" />
+            filename="meshes/A2D/wide1_Link.STL" />
         </geometry>
         <material
           name="">
@@ -1941,7 +1941,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide1_Link.STL" />
+            filename="meshes/A2D/wide1_Link.STL" />
         </geometry>
       </collision>
     </link>
@@ -1985,7 +1985,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide3_Link.STL" />
+            filename="meshes/A2D/wide3_Link.STL" />
         </geometry>
         <material
           name="">
@@ -1999,7 +1999,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide3_Link.STL" />
+            filename="meshes/A2D/wide3_Link.STL" />
         </geometry>
       </collision>
     </link>
@@ -2043,7 +2043,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide4_Link.STL" />
+            filename="meshes/A2D/wide4_Link.STL" />
         </geometry>
         <material
           name="">
@@ -2057,7 +2057,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide4_Link.STL" />
+            filename="meshes/A2D/wide4_Link.STL" />
         </geometry>
       </collision>
     </link>
@@ -2101,7 +2101,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide2_Link.STL" />
+            filename="meshes/A2D/wide2_Link.STL" />
         </geometry>
         <material
           name="">
@@ -2115,7 +2115,7 @@
           rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="package://meshes/wide2_Link.STL" />
+            filename="meshes/A2D/wide2_Link.STL" />
         </geometry>
       </collision>
     </link>
