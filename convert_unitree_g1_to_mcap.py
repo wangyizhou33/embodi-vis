@@ -1,4 +1,3 @@
-import torch
 from lerobot.datasets.lerobot_dataset import LeRobotDataset
 from urdfpy import URDF
 from io import BytesIO

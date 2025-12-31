@@ -1,7 +1,6 @@
 from urdfpy import URDF
 import argparse
 import pyrender
-import matplotlib.pyplot as plt
 import numpy as np
 from tqdm import tqdm
 from mcap.writer import Writer as McapWriter
