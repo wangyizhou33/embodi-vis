@@ -104,6 +104,47 @@ tree -L 4 ./arkitscenes
         └── ...
 ```
 
+### 3.7 OpenGalaxea/Galaxea-Open-World-Dataset
+https://huggingface.co/datasets/OpenGalaxea/Galaxea-Open-World-Dataset. 
+The dataset contains two formats (lerobot and RLDS). We provide support for both of them.  
+
+The file tree for the RLDS version should look like:
+```sh
+tree ./galaxea_data -L 4
+galaxea_data/
+└── rlds
+    ├── part1_r1_lite
+    │   └── 1.0.0
+    │       ├── dataset_info.json
+    │       ├── features.json
+    │       └── merged_dataset_large_r1_lite-train.tfrecord-00000-of-02048
+```
+
+The file tree for the lerobot version should look like:
+```sh
+tree OpenGalaxea -L 4                            
+OpenGalaxea
+└── Galaxea-Open-World-Dataset
+    ├── data
+    │   └── chunk-000
+    │       ├── episode_000000.parquet
+    │       ├── episode_000001.parquet
+    │       ├── episode_000002.parquet
+    │           ...
+    ├── meta
+    │   ├── episodes.jsonl
+    │   ├── episodes_stats.jsonl
+    │   ├── info.json
+    │   └── tasks.jsonl
+    └── videos
+        └── chunk-000
+            ├── observation.images.head_rgb
+            ├── observation.images.head_right_rgb
+            ├── observation.images.left_wrist_rgb
+            └── observation.images.right_wrist_rgb
+```
+
+
 ## 4. Visualization Scripts
 Inspired by the [nuscenes2mcap](https://github.com/foxglove/nuscenes2mcap) repository, we provide example Python scripts to convert datasets from their original format to MCAP files.  
 
@@ -146,6 +187,17 @@ Coming soon
 
 ### 4.6 Open X-Embodiment
 Coming soon
+
+
+### 4.7 OpenGalaxea/Galaxea-Open-World-Dataset
+```sh
+python ./convert_galaxea_r1lite_to_mcap_lerobot.py # lerobot data 
+```
+
+```sh
+python ./convert_galaxea_r1lite_to_mcap_rlds.py # rlds data 
+```
+![image](docs/galaxea.png)
 
 
 ## 5 Serve the urdf files
