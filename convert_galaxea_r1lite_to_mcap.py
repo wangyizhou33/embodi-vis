@@ -113,7 +113,7 @@ def main(
     print(f"Videos will be saved to: {output_dir}")
 
     # 2) Random access by index
-    stream = open("galaxea_r1lite.mcap", "wb")
+    stream = open("galaxea_r1lite_rlds.mcap", "wb")
     writer = McapWriter(stream)
     writer.start()
     protobuf_writer = ProtobufWriter(writer)
@@ -215,6 +215,7 @@ def main(
             # Read joint positions from the data
             left_arm_positions = step['observation']['joint_position_arm_left'].numpy()
             right_arm_positions = step['observation']['joint_position_arm_right'].numpy()
+            torso_positions = step['observation']['joint_position_torso'].numpy()
 
             # Assign left arm joint positions
             joint_positions["left_arm_joint1"] = float(left_arm_positions[0])
@@ -232,6 +233,11 @@ def main(
             joint_positions["right_arm_joint5"] = float(right_arm_positions[4])
             joint_positions["right_arm_joint6"] = float(right_arm_positions[5])
 
+            joint_positions["torso_joint1"] = float(torso_positions[0])
+            joint_positions["torso_joint2"] = float(torso_positions[1])
+            joint_positions["torso_joint3"] = float(torso_positions[2])
+            # however sample["observation.state.torso"] is shape 4
+
             # forward kinematics
             # the "base_link" of the robot is "pelvis"
             # fix the pelvis in the world right now
@@ -243,7 +249,7 @@ def main(
                 FrameTransform(
                     timestamp=timestamp(ts_ns),
                     parent_frame_id="world",
-                    child_frame_id="base_link",
+                    child_frame_id=base_link,
                     translation=Vector3(x=0.0, y=0.0, z=0.0),
                     rotation=Quaternion(x=0.0, y=0.0, z=0.0, w=1.0),
                 )
