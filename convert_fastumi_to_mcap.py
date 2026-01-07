@@ -185,6 +185,18 @@ def process_trajectory(protobuf_writer, trajectory_path, child_frame_id):
         print(f"Error reading {trajectory_path}: {e}")
         return
 
+    # Precompute static transform for camera frame (Z forward, X right, Y down)
+    # relative to hand frame (X forward, Y left, Z up)
+    # Hand X (Fwd) -> Cam Z (Fwd)
+    # Hand Y (Left) -> Cam -X (Left) -> Cam X (Right) = -Hand Y
+    # Hand Z (Up)   -> Cam -Y (Up)   -> Cam Y (Down)  = -Hand Z
+    # Basis of Cam in Hand:
+    # X_c = (0, -1, 0)
+    # Y_c = (0, 0, -1)
+    # Z_c = (1, 0, 0)
+    r_cam = Rotation.from_matrix([[0, 0, 1], [-1, 0, 0], [0, -1, 0]])
+    q_cam = r_cam.as_quat()
+
     for _, row in df.iterrows():
         ts_sec = row["timestamp"]
         ts_ns = int(ts_sec * 1_000_000_000)
@@ -192,30 +204,27 @@ def process_trajectory(protobuf_writer, trajectory_path, child_frame_id):
         # Create the transform message
         tfs = FrameTransforms()
 
-        # Convert from Left-Handed (Y-Right) to Right-Handed (Y-Left)
-        # Translation: y_rh = -y_lh
-        # Rotation: Mirror across XZ plane (negate x and z components of quaternion)
         qx, qy, qz, qw = float(row["qx"]), float(row["qy"]), float(row["qz"]), float(row["qw"])
-        r_base_hand = Rotation.from_quat([qx, qy, qz, qw])
-
-        # Rotate the hand frame from (X-fwd, Y-left, Z-up) to (Z-fwd, X-right, Y-down)
-        # so that +Z is forward (CV convention)
-        r_cv = Rotation.from_matrix([
-            [ 0,  0, 1],
-            [-1,  0, 0],
-            [ 0, -1, 0]
-        ])
-        r_final = r_base_hand * r_cv
-        q_final = r_final.as_quat()
+        tx, ty, tz = np.array([float(row["x"]), float(row["y"]), float(row["z"])])
 
         tf = FrameTransform(
             timestamp=timestamp(ts_ns),
             parent_frame_id="base_link",
             child_frame_id=child_frame_id,
-            translation=Vector3(x=float(row["x"]), y=-float(row["y"]), z=float(row["z"])),
-            rotation=Quaternion(x=float(q_final[0]), y=float(q_final[1]), z=float(q_final[2]), w=float(q_final[3])),
+            translation=Vector3(x = tx, y = ty, z = tz),
+            rotation=Quaternion(x = qx, y = qy, z = qz, w = qw),
         )
         tfs.transforms.append(tf)
+
+        # Add static camera transform
+        tf_cam = FrameTransform(
+            timestamp=timestamp(ts_ns),
+            parent_frame_id=child_frame_id,
+            child_frame_id=child_frame_id + "_cam",
+            translation=Vector3(x=0.0, y=0.0, z=0.0),
+            rotation=Quaternion(x=float(q_cam[0]), y=float(q_cam[1]), z=float(q_cam[2]), w=float(q_cam[3])),
+        )
+        tfs.transforms.append(tf_cam)
 
         # Write to the /tf topic
         protobuf_writer.write_message(
@@ -306,7 +315,7 @@ if __name__ == "__main__":
                     video_path,
                     timestamp_path,
                     topic=f"/fastumi/{hand}_hand/rgb",
-                    frame_id=f"{hand}_hand",
+                    frame_id=f"{hand}_hand_cam",
                 )
             else:
                 print(f"video.mp4 or timestamps.csv not found in {os.path.join(hand_folder, 'RGB_Images')}")
