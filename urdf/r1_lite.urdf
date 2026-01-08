@@ -26,7 +26,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/base_link.obj" />
+          filename="meshes/r1_lite/base_link.dae" />
       </geometry>
       
     </visual>
@@ -62,7 +62,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/steer_motor_link1.obj" />
+          filename="meshes/r1_lite/steer_motor_link1.dae" />
       </geometry>
       
     </visual>
@@ -116,7 +116,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/wheel_motor_link1.obj" />
+          filename="meshes/r1_lite/wheel_motor_link1.dae" />
       </geometry>
       
     </visual>
@@ -165,7 +165,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/steer_motor_link2.obj" />
+          filename="meshes/r1_lite/steer_motor_link2.dae" />
       </geometry>
       
     </visual>
@@ -219,7 +219,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/wheel_motor_link2.obj" />
+          filename="meshes/r1_lite/wheel_motor_link2.dae" />
       </geometry>
       
     </visual>
@@ -268,7 +268,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/steer_motor_link3.obj" />
+          filename="meshes/r1_lite/steer_motor_link3.dae" />
       </geometry>
       
     </visual>
@@ -322,7 +322,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/wheel_motor_link3.obj" />
+          filename="meshes/r1_lite/wheel_motor_link3.dae" />
       </geometry>
       
     </visual>
@@ -371,7 +371,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/torso_link1.obj" />
+          filename="meshes/r1_lite/torso_link1.dae" />
       </geometry>
       
     </visual>
@@ -425,7 +425,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/torso_link2.obj" />
+          filename="meshes/r1_lite/torso_link2.dae" />
       </geometry>
       
     </visual>
@@ -479,7 +479,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/torso_link3.obj" />
+          filename="meshes/r1_lite/torso_link3.dae" />
       </geometry>
       
     </visual>
@@ -574,7 +574,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/left_arm_base_link.obj" />
+          filename="meshes/r1_lite/left_arm_base_link.dae" />
       </geometry>
       
     </visual>
@@ -623,7 +623,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/left_arm_link1.obj" />
+          filename="meshes/r1_lite/left_arm_link1.dae" />
       </geometry>
       
     </visual>
@@ -677,7 +677,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/left_arm_link2.obj" />
+          filename="meshes/r1_lite/left_arm_link2.dae" />
       </geometry>
       
     </visual>
@@ -731,7 +731,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/left_arm_link3.obj" />
+          filename="meshes/r1_lite/left_arm_link3.dae" />
       </geometry>
       
     </visual>
@@ -785,7 +785,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/left_arm_link4.obj" />
+          filename="meshes/r1_lite/left_arm_link4.dae" />
       </geometry>
       
     </visual>
@@ -839,7 +839,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/left_arm_link5.obj" />
+          filename="meshes/r1_lite/left_arm_link5.dae" />
       </geometry>
       
     </visual>
@@ -893,7 +893,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/left_arm_link6.obj" />
+          filename="meshes/r1_lite/left_arm_link6.dae" />
       </geometry>
       
     </visual>
@@ -947,7 +947,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/left_gripper_link.obj" />
+          filename="meshes/r1_lite/left_gripper_link.dae" />
       </geometry>
       
     </visual>
@@ -996,7 +996,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/left_D405_link.obj" />
+          filename="meshes/r1_lite/left_D405_link.dae" />
       </geometry>
       
     </visual>
@@ -1045,7 +1045,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/left_gripper_finger_link1.obj" />
+          filename="meshes/r1_lite/left_gripper_finger_link1.dae" />
       </geometry>
       
     </visual>
@@ -1099,7 +1099,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/left_gripper_finger_link2.obj" />
+          filename="meshes/r1_lite/left_gripper_finger_link2.dae" />
       </geometry>
       
     </visual>
@@ -1153,7 +1153,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/right_arm_base_link.obj" />
+          filename="meshes/r1_lite/right_arm_base_link.dae" />
       </geometry>
       
     </visual>
@@ -1202,7 +1202,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/right_arm_link1.obj" />
+          filename="meshes/r1_lite/right_arm_link1.dae" />
       </geometry>
       
     </visual>
@@ -1256,7 +1256,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/right_arm_link2.obj" />
+          filename="meshes/r1_lite/right_arm_link2.dae" />
       </geometry>
       
     </visual>
@@ -1310,7 +1310,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/right_arm_link3.obj" />
+          filename="meshes/r1_lite/right_arm_link3.dae" />
       </geometry>
       
     </visual>
@@ -1364,7 +1364,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/right_arm_link4.obj" />
+          filename="meshes/r1_lite/right_arm_link4.dae" />
       </geometry>
       
     </visual>
@@ -1418,7 +1418,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/right_arm_link5.obj" />
+          filename="meshes/r1_lite/right_arm_link5.dae" />
       </geometry>
       
     </visual>
@@ -1472,7 +1472,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/right_arm_link6.obj" />
+          filename="meshes/r1_lite/right_arm_link6.dae" />
       </geometry>
       
     </visual>
@@ -1526,7 +1526,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/right_gripper_link.obj" />
+          filename="meshes/r1_lite/right_gripper_link.dae" />
       </geometry>
       
     </visual>
@@ -1575,7 +1575,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/right_D405_link.obj" />
+          filename="meshes/r1_lite/right_D405_link.dae" />
       </geometry>
       
     </visual>
@@ -1624,7 +1624,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/right_gripper_finger_link1.obj" />
+          filename="meshes/r1_lite/right_gripper_finger_link1.dae" />
       </geometry>
       
     </visual>
@@ -1678,7 +1678,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="meshes/r1_lite/right_gripper_finger_link2.obj" />
+          filename="meshes/r1_lite/right_gripper_finger_link2.dae" />
       </geometry>
       
     </visual>
