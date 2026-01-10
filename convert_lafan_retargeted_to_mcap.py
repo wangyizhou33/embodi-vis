@@ -1,4 +1,5 @@
 from urdfpy import URDF
+import xml.etree.ElementTree as ET
 import base64
 import numpy as np
 from scipy.spatial.transform import Rotation
@@ -19,8 +20,21 @@ from foxglove_schemas_protobuf.Pose_pb2 import Pose
 from foxglove_schemas_protobuf.Color_pb2 import Color
 from google.protobuf.timestamp_pb2 import Timestamp
 
-URDF_FILE = "./urdf/g1_29dof_rev_1_0.urdf"
+URDF_FILE = "./urdf/hi_pro_27dof_260101.urdf"
 DATA_FILE = "./lafan_data/converted_lafan.npz"
+
+def get_ordered_actuated_joint_names(urdf_path):
+    """
+    Parses the URDF file directly to get joint names in the order they appear,
+    excluding fixed joints.
+    """
+    tree = ET.parse(urdf_path)
+    root = tree.getroot()
+    joint_names = []
+    for joint in root.findall('joint'):
+        if joint.get('type') != 'fixed':
+            joint_names.append(joint.get('name'))
+    return joint_names
 
 def timestamp(time_ns: int) -> Timestamp:
     return Timestamp(seconds=time_ns // 1_000_000_000, nanos=time_ns % 1_000_000_000)
@@ -91,20 +105,9 @@ if __name__ == "__main__":
 
     base_link = robot.base_link.name
 
-    # Verify joint count matches data
-    # qpos structure: [qw, qx, qy, qz, x, y, z] (7D) + Joint Positions (29D)
-    expected_joints = 29
-    if len(robot.actuated_joints) != expected_joints:
-        print(f"Warning: URDF has {len(robot.actuated_joints)} actuated joints, but data expects {expected_joints}.")
-
     # Joint mapping based on the provided order
-    LAFAN_JOINT_NAMES = [
-        "left_hip_pitch_joint", "left_hip_roll_joint", "left_hip_yaw_joint", "left_knee_joint", "left_ankle_pitch_joint", "left_ankle_roll_joint",
-        "right_hip_pitch_joint", "right_hip_roll_joint", "right_hip_yaw_joint", "right_knee_joint", "right_ankle_pitch_joint", "right_ankle_roll_joint",
-        "waist_yaw_joint", "waist_roll_joint", "waist_pitch_joint",
-        "left_shoulder_pitch_joint", "left_shoulder_roll_joint", "left_shoulder_yaw_joint", "left_elbow_joint", "left_wrist_roll_joint", "left_wrist_pitch_joint", "left_wrist_yaw_joint",
-        "right_shoulder_pitch_joint", "right_shoulder_roll_joint", "right_shoulder_yaw_joint", "right_elbow_joint", "right_wrist_roll_joint", "right_wrist_pitch_joint", "right_wrist_yaw_joint"
-    ]
+    JOINT_NAMES = get_ordered_actuated_joint_names(args.urdf)
+    print(f"Loaded {len(JOINT_NAMES)} joints from URDF in order.")
 
     for i in tqdm(range(len(qpos_all))):
         # process data rows
@@ -124,7 +127,7 @@ if __name__ == "__main__":
         
         # Configure robot joints
         cfg = {}
-        for j, joint_name in enumerate(LAFAN_JOINT_NAMES):
+        for j, joint_name in enumerate(JOINT_NAMES):
             if joint_name and j < len(joint_positions):
                 cfg[joint_name] = joint_positions[j]
         

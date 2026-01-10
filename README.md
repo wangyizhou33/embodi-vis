@@ -199,6 +199,18 @@ python ./convert_galaxea_r1lite_to_mcap_rlds.py # rlds data
 ```
 ![image](docs/galaxea.png)
 
+### 4.8 Lafan retargeted data
+Unitree g1 robot    
+```sh
+python convert_lafan_retargeted_to_mcap.py --urdf "urdf/g1_29dof_rev_1_0.urdf" --data "lafan_data/g1_dance1.npz"
+```
+
+Xiaoyuanzi robot    
+```sh
+python convert_lafan_retargeted_to_mcap.py --urdf "urdf/hi_pro_27dof_260101.urdf" --data "lafan_data/xiaoyuanzi_dance1.npz"
+```
+
+
 
 ## 5 Serve the urdf files
 You need to serve the urdf files for the foxglove frontend. 
