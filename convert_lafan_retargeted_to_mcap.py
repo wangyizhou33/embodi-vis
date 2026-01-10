@@ -20,7 +20,7 @@ from foxglove_schemas_protobuf.Color_pb2 import Color
 from google.protobuf.timestamp_pb2 import Timestamp
 
 URDF_FILE = "./urdf/g1_29dof_rev_1_0.urdf"
-DATA_FILE = "./lafan_data/dance2_subject1.npz"
+DATA_FILE = "./lafan_data/converted_lafan.npz"
 
 def timestamp(time_ns: int) -> Timestamp:
     return Timestamp(seconds=time_ns // 1_000_000_000, nanos=time_ns % 1_000_000_000)
