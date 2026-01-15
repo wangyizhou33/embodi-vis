@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 from scipy.spatial.transform import Rotation
+from tqdm import tqdm
 
 from mcap.writer import Writer as McapWriter
 from ProtobufWriter import ProtobufWriter
@@ -117,7 +118,6 @@ def create_camera_transform(parent_frame_id, child_frame_id, extrinsic):
 
 def process_video(protobuf_writer, video_path, timestamp_path, topic, frame_id):
     """Processes a video file and writes its frames to the mcap file."""
-    print(f"Processing video {video_path}")
     timestamps_df = pd.read_csv(timestamp_path)
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
@@ -125,6 +125,7 @@ def process_video(protobuf_writer, video_path, timestamp_path, topic, frame_id):
         return
 
     frame_index = 0
+    pbar = tqdm(total=len(timestamps_df), desc=f"Processing video {frame_id}", file=sys.stdout)
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -165,14 +166,15 @@ def process_video(protobuf_writer, video_path, timestamp_path, topic, frame_id):
             break
 
         frame_index += 1
+        pbar.update(1)
 
+    pbar.close()
     cap.release()
     print(f"Finished processing video {video_path}")
 
 
 def process_trajectory(protobuf_writer, trajectory_path, child_frame_id):
     """Processes a trajectory file and writes TF messages to the mcap file."""
-    print(f"Processing trajectory {trajectory_path}")
     try:
         # Read the space-separated file without a header
         df = pd.read_csv(
@@ -197,7 +199,7 @@ def process_trajectory(protobuf_writer, trajectory_path, child_frame_id):
     r_cam = Rotation.from_matrix([[0, 0, 1], [-1, 0, 0], [0, -1, 0]])
     q_cam = r_cam.as_quat()
 
-    for _, row in df.iterrows():
+    for _, row in tqdm(df.iterrows(), total=len(df), desc=f"Processing trajectory {child_frame_id}", file=sys.stdout):
         ts_sec = row["timestamp"]
         ts_ns = int(ts_sec * 1_000_000_000)
 
@@ -274,12 +276,13 @@ def get_session_start_time(session_path):
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
     argparser.add_argument("--output", type=str, default="fastumi.mcap")
+    argparser.add_argument("--data_dir", type=str, default=os.path.normpath(os.path.join(dir_path, "..", "fastumi_sample")), help="Path to the root data directory")
     argparser.add_argument("--task", type=str, default="task1")
     argparser.add_argument("--session", type=str, default="session_1")
     args = argparser.parse_args()
 
     # Get the path to the session folder
-    session_path = os.path.normpath(os.path.join(dir_path, "..", "fastumi_sample", args.task, args.session))
+    session_path = os.path.normpath(os.path.join(args.data_dir, args.task, args.session))
 
     session_start_time = get_session_start_time(session_path)
     if session_start_time is not None:

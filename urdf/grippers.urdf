@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="DAS Final-818-819-URDF">
+  
+  <link name="base_link">
+    <visual>
+        <geometry>
+            <sphere radius="0.001"/>
+        </geometry>
+    </visual>
+  </link>
+
+  <joint name="base_to_left" type="floating">
+    <parent link="base_link"/>
+    <child link="left_hand"/>
+    <origin xyz="0 0.35 0" rpy="0 0 0"/>
+  </joint>
+
+  <link
+    name="left_hand">
+    <inertial>
+      <origin
+        xyz="3.7234E-05 0.012923 -0.02301"
+        rpy="0 0.0 0" />
+      <mass
+        value="1.9751" />
+      <inertia
+        ixx="0.0021097"
+        ixy="9.6419E-06"
+        ixz="6.988E-06"
+        iyy="0.0023622"
+        iyz="8.3495E-05"
+        izz="0.0014333" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="-0.00 0 -0.10"
+        rpy="0 0 1.57" />
+      <geometry>
+        <mesh
+          filename="./das_gripper_hand.glb" scale="0.1 0.1 0.1"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.61176 0.65882 0.67059 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="1.57 1.57 0" />
+      <geometry>
+        <mesh
+          filename="./das_gripper_hand.glb" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="base_to_right" type="floating">
+    <parent link="base_link"/>
+    <child link="right_hand"/>
+    <origin xyz="0 -0.35 0" rpy="0 0 0"/>
+  </joint>
+
+  <link
+    name="right_hand">
+    <inertial>
+      <origin
+        xyz="3.7234E-05 0.012923 -0.02301"
+        rpy="0 0.0 0" />
+      <mass
+        value="1.9751" />
+      <inertia
+        ixx="0.0021097"
+        ixy="9.6419E-06"
+        ixz="6.988E-06"
+        iyy="0.0023622"
+        iyz="8.3495E-05"
+        izz="0.0014333" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="-0.00 0 -0.10"
+        rpy="0 0 1.57" />
+      <geometry>
+        <mesh
+          filename="./base_link_compressed1.glb" scale="0.1 0.1 0.1"/>
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.61176 0.65882 0.67059 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="1.57 1.57 0" />
+      <geometry>
+        <mesh
+          filename="./base_link_compressed1.glb" />
+      </geometry>
+    </collision>
+  </link>
+</robot>

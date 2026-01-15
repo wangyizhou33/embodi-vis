@@ -210,6 +210,27 @@ Xiaoyuanzi robot
 python convert_lafan_retargeted_to_mcap.py --urdf "urdf/hi_pro_27dof_260101.urdf" --data "lafan_data/xiaoyuanzi_dance1.npz"
 ```
 
+### 4.9 Fastumi sample data
+The data directory looks like this 
+```
+../fastumi_sample
+...
+├── task1
+│   ├── session_1
+│   │   ├── left_hand_250801DR48FP25002314
+│   │   └── right_hand_250801DR48FB25002625
+...
+├── task2
+│   ├── session_001
+│   │   ├── Clamp_Data
+│   │   ├── Merged_Trajectory
+│   │   └── RGB_Images
+...
+```
+Command to run
+```
+ python convert_fastumi_to_mcap.py --task task3 --session session_001 --data_dir ../fastumi_sample
+ ```
 
 
 ## 5 Serve the urdf files
