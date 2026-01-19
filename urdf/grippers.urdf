@@ -41,7 +41,7 @@
         rpy="0 0 1.57" />
       <geometry>
         <mesh
-          filename="./das_gripper_hand.glb" scale="0.1 0.1 0.1"/>
+          filename="./gripper_hand.glb" scale="0.1 0.1 0.1"/>
       </geometry>
       <material
         name="">
@@ -55,7 +55,7 @@
         rpy="1.57 1.57 0" />
       <geometry>
         <mesh
-          filename="./das_gripper_hand.glb" />
+          filename="./gripper_hand.glb" />
       </geometry>
     </collision>
   </link>
@@ -88,7 +88,7 @@
         rpy="0 0 1.57" />
       <geometry>
         <mesh
-          filename="./base_link_compressed1.glb" scale="0.1 0.1 0.1"/>
+          filename="./gripper_hand.glb" scale="0.1 0.1 0.1"/>
       </geometry>
       <material
         name="">
@@ -102,7 +102,7 @@
         rpy="1.57 1.57 0" />
       <geometry>
         <mesh
-          filename="./base_link_compressed1.glb" />
+          filename="./gripper_hand.glb" />
       </geometry>
     </collision>
   </link>
