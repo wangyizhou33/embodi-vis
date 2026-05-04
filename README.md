@@ -17,7 +17,8 @@ Please be aware of unresolved dependency conflicts between `lerobot`, `urdfpy`, 
 You can use the provided scripts and pointers to download the datasets.   
 
 
-### 3.1 Lerobot
+### 3.1 Droid
+#### 3.1.1 Lerobot format
 The script expects the datasets to be as the following:
 ```sh
 $ tree -L 3 .
@@ -49,7 +50,7 @@ The LeRobot datasets will be automatically downloaded by the `LeRobotDataset` AP
 
 The visualization scripts are expected to be compatible with other datasets from the [unitreerobotics](https://huggingface.co/unitreerobotics) project, although they have not been formally tested.
 
-### 3.2 Droid
+#### 3.1.2 RLDS format
 The Droid dataset is at google cloud storage and can be downloaded via
 ```sh
 gsutil -m cp -r gs://gresearch/robotics/droid_raw/1.0.1/ILIAD/success/2023-06-11/Sun_Jun_11_15:52:37_2023 data/
@@ -74,14 +75,14 @@ $ tree -L 3 .
 ```
 
 
-### 3.3 EmbodiedScan
+### 3.2 EmbodiedScan
 Coming soon
 
-### 3.4 Open X-Embodiment
+### 3.3 Open X-Embodiment
 Coming soon
 
 
-### 3.5 Arkit scenes
+### 3.4 Arkit scenes
 To download a arkitscene data episode, use
 ```sh
 python download_arkitscenes.py
@@ -104,7 +105,7 @@ tree -L 4 ./arkitscenes
         └── ...
 ```
 
-### 3.7 OpenGalaxea/Galaxea-Open-World-Dataset
+### 3.5 OpenGalaxea/Galaxea-Open-World-Dataset
 https://huggingface.co/datasets/OpenGalaxea/Galaxea-Open-World-Dataset. 
 The dataset contains two formats (lerobot and RLDS). We provide support for both of them.  
 
@@ -150,22 +151,32 @@ Inspired by the [nuscenes2mcap](https://github.com/foxglove/nuscenes2mcap) repos
 
 Before running the visualization scripts, please ensure the datasets are present, as described in Section 3.
 
-### 4.1 Lerobot 
+### 4.1 Droid
+#### 4.1.1 Lerobot format 
+For the DROID dataset lerobot format (see sec.3.1.1), run:
+```sh
+python ./convert_droid_101_to_mcap.py
+```
+![image](docs/droid_101.png)
+
+#### 4.1.2 RLDS
+For the DROID dataset RLDS format (see sec.3.1.2), run:
+```sh
+python covert_droid_rlds_to_mcap.py
+```
+Optional example:
+```sh
+python covert_droid_rlds_to_mcap.py --num-episodes 2 --max-steps 500 --output droid_rlds.mcap
+```
+
+
+### 4.2 Unitree go2
 For the unitree dataset, run
 ```sh
 python ./convert_unitree_g1_to_mcap.py
 ```
 ![image](docs/unitree_g1.png)
 
-
-For the DROID dataset (in LeRobot format, not the original DROID release), run:
-```sh
-python ./convert_droid_101_to_mcap.py
-```
-![image](docs/droid_101.png)
-
-
-### 4.2 Unitree go2
 We recorded a go2 robot "standing" experiment in `go2_motor_states.csv`. The recording consists of 12 columns corresponding to the 12 actuated joint states.
 ```sh
 python ./convert_unitree_go2_to_mcap.py
@@ -179,17 +190,15 @@ python convert_arkitscene_to_mcap.py
 ![image](docs/arkit_scene.png)
 
 
-### 4.4 Droid
 
-
-### 4.5 EmbodiedScan
+### 4.4 EmbodiedScan
 Coming soon
 
-### 4.6 Open X-Embodiment
+### 4.5 Open X-Embodiment
 Coming soon
 
 
-### 4.7 OpenGalaxea/Galaxea-Open-World-Dataset
+### 4.6 OpenGalaxea/Galaxea-Open-World-Dataset
 ```sh
 python ./convert_galaxea_r1lite_to_mcap_lerobot.py # lerobot data 
 ```
@@ -199,7 +208,7 @@ python ./convert_galaxea_r1lite_to_mcap_rlds.py # rlds data
 ```
 ![image](docs/galaxea.png)
 
-### 4.8 Lafan retargeted data
+### 4.7 Lafan retargeted data
 Unitree g1 robot    
 ```sh
 python convert_lafan_retargeted_to_mcap.py --urdf "urdf/g1_29dof_rev_1_0.urdf" --data "lafan_data/g1_dance1.npz"
@@ -210,7 +219,7 @@ Xiaoyuanzi robot
 python convert_lafan_retargeted_to_mcap.py --urdf "urdf/hi_pro_27dof_260101.urdf" --data "lafan_data/xiaoyuanzi_dance1.npz"
 ```
 
-### 4.9 Fastumi sample data
+### 4.8 Fastumi sample data
 The data directory looks like this 
 ```
 ../fastumi_sample
